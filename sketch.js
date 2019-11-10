@@ -23,11 +23,20 @@ function draw(){
         }
     }
     for(let i=0;i<buttons.length;i++){
-        stroke(255);
-        noFill();
-        rect(buttons[i][0],buttons[i][1],(width/cols),(width/cols));
-        textSize(20);
-        text("Drop",buttons[i][0]+20,buttons[i][1]+((width/cols)/2))
+        // stroke(255);
+        // noFill();
+        // rect(buttons[i][0],buttons[i][1],(width/cols),(width/cols));
+        // textSize(20);
+        // text("Drop",buttons[i][0]+20,buttons[i][1]+((width/cols)/2))
+        if(collidePointRect(mouseX,mouseY,buttons[i][0],buttons[i][1],(width/cols),(width/cols))){
+            stroke(255);
+            if(currentColor=="red")
+                fill(255,0,0);
+            else
+                fill(255,255,0);
+            ellipseMode(CENTER);
+            ellipse(buttons[i][0]+(width/cols)/2,buttons[i][1]+(width/cols)/2,(width/cols))
+        }
     }
 }
 function mousePressed(){
@@ -37,17 +46,19 @@ function mousePressed(){
                 if(holes[j][i].color==null){
                     if(currentColor=="red"){
                         holes[j][i].color="red";
+                        holes[j][i].show();
                         if(winCheck(currentColor)){
                             alert("Red Won");
-                            noLoop();
+                            reset();
                         }
                         currentColor="yellow";
                     }
                     else if(currentColor=="yellow"){
                         holes[j][i].color="yellow";
+                        holes[j][i].show();
                         if(winCheck(currentColor)){
                             alert("Yellow Won");
-                            noLoop();
+                            reset();
                         }
                         currentColor="red";
                     }
@@ -111,4 +122,11 @@ function winCheck(color){
         }
     }
     return false;
+}
+function reset(){
+    for(let i=0;i<rows;i++){
+        for(let j=0;j<cols;j++){
+            holes[i][j].color=null;
+        }
+    }
 }
